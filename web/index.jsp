@@ -12,6 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <a href="MenuController">Begin Order </a>
+        <a href="MenuController?action=menu">Begin Order </a><br/>
+        <a href="UpdateController?action=update">Update Menu </a>
     </body>
 </html>

@@ -4,33 +4,25 @@
  */
 package controller;
 
-import database.MenuDB;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import model.MenuItem;
-import model.MenuItemDAO;
-import model.MenuService;
 
 /**
  *
- * @author Bob
+ * @author rbath1
  */
-public class MenuController extends HttpServlet {
-    private static final String MENU_PAGE = "/menu.jsp";
-
-
+public class FrontController extends HttpServlet {
+    private static final String HOME = "/index.jsp";
+    private static final String MENU_CONTROLLER = "/MenuController";
+    private static final String UPDATE_CONTROLLER = "/UpdateController";
+    private static final String INPUT_KEY = "action";
+    private static final String INPUT_TYPE1 = "menu";
+    private static final String INPUT_TYPE2 = "update";
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -41,25 +33,27 @@ public class MenuController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-
-public MenuController(){
-    super();
-}
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-
-        MenuService service = new MenuService();
-        List<MenuItem> menuItems = service.getMenu();
-
-                request.setAttribute("menuList", menuItems);
-                
-        RequestDispatcher view =
-                request.getRequestDispatcher(MENU_PAGE);
-        view.forward(request, response);  
+        String destination = HOME;
+        
+        String key = request.getParameter(INPUT_KEY);
+    	if( key.equals(INPUT_TYPE1)) {
+    		destination = MENU_CONTROLLER;
+    	} else if(key.equals(INPUT_TYPE2)) {
+    		destination = UPDATE_CONTROLLER;
+        } else {
+            destination = HOME;
+        }
+        
+        
+        RequestDispatcher dispatcher = 
+                getServletContext().getRequestDispatcher(destination);
+        dispatcher.forward(request, response);
+        
     }
-    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -74,13 +68,7 @@ public MenuController(){
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    try {     
         processRequest(request, response);
-    } catch (Exception ex) {
-        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-    }
-       
-        
     }
 
     /**
@@ -95,25 +83,7 @@ public MenuController(){
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    try {
-        processRequest(request,response);
-//      response.setContentType("text/html;charset=UTF-8");
-//        PrintWriter out = response.getWriter();
-//       
-//        MenuItemDAO dao = new MenuItemDAO();
-//        List<MenuItem> menuItems = new ArrayList<MenuItem>();
-//       
-//        
-//        menuItems = dao.getCurrentMenuChoices();
-//        
-//        request.setAttribute("menuList", menuItems);
-//        
-//        RequestDispatcher view =
-//                request.getRequestDispatcher(MENU_PAGE);
-//        view.forward(request, response);
-    } catch (Exception ex) {
-        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-    }
+        processRequest(request, response);
     }
 
     /**

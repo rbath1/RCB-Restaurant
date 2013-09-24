@@ -25,16 +25,12 @@ public class MenuItemDAO implements IMenuItemDAO {
         List<MenuItem> items = new ArrayList<MenuItem>();
         
         try {
-            // Make sure you always open a connection before trying to
-            // send commands to the database.
+           
             database.openConnection();
             
             String query = "SELECT * FROM item";
             
-            // Usuallly you want the connection to be closed when the db
-            // method finishes (second parameter = true). The reason is that
-            // if you leave it open (second parameter = false) then you risk
-            // the database connection might time out and close on its own.
+         
             List<Map> rawData = database.findRecords(query, true);
             for(Map record : rawData) {
                 MenuItem item = new MenuItem();
@@ -46,9 +42,7 @@ public class MenuItemDAO implements IMenuItemDAO {
                 item.setItemPrice(price);
                 items.add(item); 
             }
-            
             return items;
-            
         } catch (IllegalArgumentException ex) {
             throw new RuntimeException(ex.getMessage(), ex);
         } catch (ClassNotFoundException ex) {
@@ -59,17 +53,18 @@ public class MenuItemDAO implements IMenuItemDAO {
              throw new RuntimeException(ex.getMessage(), ex);
         } 
     }
-    
+ 
     public static void main(String[] args) throws RuntimeException, SQLException {
 //        MenuItemDAO dao = new MenuItemDAO();
-//        List<MenuItem> items = dao.getMenuChoices();
+//        List<MenuItem> items = dao.getMenu();
 //        for(MenuItem item : items){
 //             String itemName = item.getItemName();
 //                            double itemPrice = item.getItemPrice();
 //                            System.out.println(itemName + ", " + itemPrice);
-        }
-    //    System.out.println(items);
+//        }
+    
         
     }
+}
     
 

@@ -1,26 +1,25 @@
 <%-- 
-    Document   : menu
-    Created on : Sep 18, 2013, 9:26:52 PM
-    Author     : Bob
+    Document   : update
+    Created on : Sep 23, 2013, 9:43:22 PM
+    Author     : rbath1
 --%>
 
 <%@page import="model.MenuItem"%>
 <%@page import="java.util.List"%>
-<%@page import="java.text.NumberFormat"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-         <%
+        <title>Update Menu</title>
+    </head>
+    <body>
+        <%
 	List<MenuItem> menuList = (List<MenuItem>) request.getAttribute("menuList");
 	
 %>
-        <title>Create an Order</title>
-    </head>
-    <body>
-        <h1 align="center">Simple Restaurant</h1>
-        <form id="form1" name="form1" method="POST" action="OrderController">
+
+<form id="form1" name="form1" method="POST" action="OrderController">
          <%
                         NumberFormat nf = NumberFormat.getCurrencyInstance();
                         for(MenuItem menuItem : menuList) {
@@ -36,7 +35,10 @@
                      %>
 
                      <br/>
-         <input id="orderSubmit" name="Submit Order" type="submit" value="Place Order">
-        </form>
+   
+
+        <input type="submit" value="Add/Edit" name="addEdit" />&nbsp;
+        <input type="submit" value="Delete" name="delete" />
+</form>
     </body>
 </html>
