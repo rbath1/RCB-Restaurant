@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package database;
 
 import java.sql.*;
@@ -16,7 +12,7 @@ import java.util.Map;
  * @author Bob
  */
 public class MenuDB implements IMenuDB {
-    private Connection conn;
+        private Connection conn;
 	private String driverClassName;
 	private String url;
 	private String userName;
@@ -32,7 +28,7 @@ public class MenuDB implements IMenuDB {
 		driverClassName = "com.mysql.jdbc.Driver";
 		url = "jdbc:mysql://localhost:3306/restaurant";
 		userName = "root";
-		password = "admin";
+		password = "kerouac00";
 
 		try {
 			  Class.forName (driverClassName);
@@ -99,6 +95,56 @@ public class MenuDB implements IMenuDB {
 
 		return list; // will  be null if none found
 	}
+        
+        public Map getRecordByID(String table, String primaryKeyField, Object keyValue, boolean closeConnection)
+	throws SQLException, Exception
+	{
+		Statement stmt = null;
+		ResultSet rs = null;
+		ResultSetMetaData metaData = null;
+		final Map record=new HashMap();
+
+		// do this in an excpetion handler so that we can depend on the
+		// finally clause to close the connection
+		try {
+			stmt = conn.createStatement();
+			String sql2;
+
+			if(keyValue instanceof String){
+				sql2 = "= '" + keyValue + "'";}
+			else {
+				sql2 = "=" + keyValue;}
+
+			final String sql="SELECT * FROM " + table + " WHERE " + primaryKeyField + sql2;
+			rs = stmt.executeQuery(sql);
+			metaData = rs.getMetaData();
+			metaData.getColumnCount();
+			final int fields=metaData.getColumnCount();
+
+			// Retrieve the raw data from the ResultSet and copy the values into a Map
+			// with the keys being the column names of the table.
+			if(rs.next() ) {
+				for( int i=1; i <= fields; i++ ) {
+					record.put( metaData.getColumnName(i), rs.getObject(i) );
+				}
+			}
+
+		} catch (SQLException sqle) {
+			throw sqle;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				stmt.close();
+				if(closeConnection) conn.close();
+			} catch(SQLException e) {
+				throw e;
+			} // end try
+		} // end finally
+
+		return record;
+	}
+        
         public boolean insertRecord(String tableName, List colDescriptors, List colValues, boolean closeConnection)
 	throws SQLException, Exception
 	{

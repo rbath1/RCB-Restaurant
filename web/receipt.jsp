@@ -23,19 +23,34 @@
                 if(objOrderList != null) {
                     List<MenuItem> orderList = (List<MenuItem>)objOrderList;
                     for(MenuItem item : orderList) {
-                        out.println("<li>" + item.getItemName() + ", " + nf.format(item.getItemPrice()) + "</li>");
-                        totalBill += item.getItemPrice();
-                    }
-                    out.println("<br/><br/>");
-                    out.println("Subtotal: " + nf.format(totalBill) + "<br/>");
-                    out.println("Tax: " + (nf.format(totalBill * .051)) + "<br/>");
-                    out.println("Total Bill: " + (nf.format(totalBill * 1.051)) + "<br/>");
-                    out.println("Tip: " + (nf.format(totalBill * 1.051 * 0.17)) + "<br/>");
-                    out.println("Total w/ Tip: " + (nf.format(totalBill * 1.051 * 1.17)) + "<br/>");
+        %>
+        <table width="400" border="1" cellpadding="4">
+            <tr><td><%  out.println(item.getItemName());%> </td>
+                <td> <% out.println(nf.format(item.getItemPrice()));%> </td></tr>
+                       
+                 <% totalBill += item.getItemPrice();
+                    } %>
+       
+                    
+            <tr><td> <%out.println("Subtotal:");%></td>
+                <td> <%out.println(nf.format(totalBill));%></td></tr>
+            <tr><td> <%out.println("Tax:");%> </td>
+                <td> <%out.println((nf.format(totalBill * .051))); %> </td></tr>
+            <tr><td> <%out.println("Total Bill:");%> </td>
+                <td> <%out.println(nf.format(totalBill * 1.051));%> </td></tr>
+            <tr><td> <%out.println("Tip:");%></td>
+                <td> <%out.println(nf.format(totalBill * 1.051 * 0.17));%> </td></tr>
+            <tr><td> <%out.println("Total w/ Tip");%></td>
+                <td> <%out.println(nf.format(totalBill * 1.051 * 1.17));%></td></tr>
+    
+                <%
                 } else {
                     out.print("Order Cannot Be Found!!");
                 }
             %>
-        
+      </table>
+            <br/>
+            <br/>
+        <a href="index.jsp">Home</a>
     </body>
 </html>

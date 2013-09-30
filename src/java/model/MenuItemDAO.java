@@ -1,15 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import database.IMenuDB;
 import database.MenuDB;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 /**
  *
@@ -23,14 +22,11 @@ public class MenuItemDAO implements IMenuItemDAO {
     
     public List<MenuItem> getMenu() throws RuntimeException, SQLException {
         List<MenuItem> items = new ArrayList<MenuItem>();
-        
         try {
-           
             database.openConnection();
             
             String query = "SELECT * FROM item";
-            
-         
+                     
             List<Map> rawData = database.findRecords(query, true);
             for(Map record : rawData) {
                 MenuItem item = new MenuItem();
@@ -53,16 +49,45 @@ public class MenuItemDAO implements IMenuItemDAO {
              throw new RuntimeException(ex.getMessage(), ex);
         } 
     }
- 
-    public static void main(String[] args) throws RuntimeException, SQLException {
-//        MenuItemDAO dao = new MenuItemDAO();
-//        List<MenuItem> items = dao.getMenu();
-//        for(MenuItem item : items){
-//             String itemName = item.getItemName();
-//                            double itemPrice = item.getItemPrice();
-//                            System.out.println(itemName + ", " + itemPrice);
-//        }
-    
+    public MenuItem findById(String id) throws IllegalArgumentException, ClassNotFoundException, SQLException, Exception {
+        database.openConnection();
+        Map rawData = database.getRecordByID("item", "item_id", id, true);
+        MenuItem i = new MenuItem();
+        i.setItemId(Integer.valueOf(rawData.get("item_id").toString()));
+        i.setItemName(String.valueOf(rawData.get("item_name").toString()));
+        i.setItemPrice(Double.valueOf(rawData.get("item_price").toString()));
+        return i;
+        
+    }
+    public void delete(String id) throws SQLException, Exception {
+        database.openConnection();
+        database.deleteRecords("item", "item_id", id, true);
+        
+    }
+    public void insert(MenuItem item) throws IllegalArgumentException, SQLException, ClassNotFoundException, Exception {
+       if(item == null) return;
+
+       List cols = new ArrayList();
+       cols.add("item_name");
+       cols.add("item_price");
+       List values = new ArrayList();
+       values.add(item.getItemName());
+       values.add(item.getItemPrice());
+            database.openConnection();
+            database.insertRecord("item", cols, values, true);
+    }
+    public void update(MenuItem item) throws IllegalArgumentException, ClassNotFoundException, SQLException, Exception{
+        
+        List cols = new ArrayList();
+        cols.add("item_name");
+        cols.add("item_price");
+        List values = new ArrayList();
+        values.add(item.getItemName().toString());
+        values.add(Double.valueOf(item.getItemPrice()));
+        int whereValue = item.getItemId();
+        
+        database.openConnection();
+        database.updateRecords("item", cols, values, "item_id", whereValue, true);
         
     }
 }

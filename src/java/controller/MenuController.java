@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import database.MenuDB;
@@ -21,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.MenuItem;
 import model.MenuItemDAO;
-import model.MenuService;
+import model.service.MenuService;
 
 /**
  *
@@ -29,6 +25,8 @@ import model.MenuService;
  */
 public class MenuController extends HttpServlet {
     private static final String MENU_PAGE = "/menu.jsp";
+    private static final String UPDATE_PAGE = "/update.jsp";
+    private static final String ACTION_KEY = "action";
 
 
     /**
@@ -49,12 +47,12 @@ public MenuController(){
             throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-
+        
+        
         MenuService service = new MenuService();
         List<MenuItem> menuItems = service.getMenu();
-
-                request.setAttribute("menuList", menuItems);
-                
+        request.setAttribute("menuList", menuItems);
+      
         RequestDispatcher view =
                 request.getRequestDispatcher(MENU_PAGE);
         view.forward(request, response);  

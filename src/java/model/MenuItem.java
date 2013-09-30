@@ -15,7 +15,10 @@ public class MenuItem {
     
     public MenuItem(){
     }
-    
+    public MenuItem(String itemName, double itemPrice){
+        this.itemName = itemName;
+        this.itemPrice = itemPrice;
+    }
     public MenuItem(int itemId, String itemName, double itemPrice){
         this.itemId = itemId;
         this.itemName = itemName;

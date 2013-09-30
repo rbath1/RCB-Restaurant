@@ -4,6 +4,7 @@
     Author     : rbath1
 --%>
 
+<%@page import="java.text.NumberFormat"%>
 <%@page import="model.MenuItem"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -19,26 +20,36 @@
 	
 %>
 
-<form id="form1" name="form1" method="POST" action="OrderController">
+<form id="form1" name="form1" method="POST" action="UpdateController?action=updateItem">
+    <table width="300" border='1'>
+        <tr><td></td><td>Name</td><td>Price</td><td>ID#</td></tr>
+    
          <%
                         NumberFormat nf = NumberFormat.getCurrencyInstance();
                         for(MenuItem menuItem : menuList) {
                             String item = menuItem.getItemName();
                             double itemPrice = menuItem.getItemPrice();
+                            int itemId = menuItem.getItemId();
+                            
                     %>
          
-                    <input type="checkbox" name="menuItems" value="<%= item %>" /> <%= (item + ", " + nf.format(itemPrice)) %><br/>
+                    <tr><td><input type="checkbox" name="itemId" id="itemId" value="<%= itemId %>" /></td>
+                        <td><%=item %></td>
+                        <td><%=nf.format(itemPrice)%></td>
+                        <td><%=itemId %></td></tr>
                     
                     <%
                         }
                         
                      %>
-
-                     <br/>
-   
-
-        <input type="submit" value="Add/Edit" name="addEdit" />&nbsp;
+   </table
+<br/>
+<br/>
+        <input type="submit" value="Add/Edit" name="addEdit" id="addEdit" />&nbsp;
         <input type="submit" value="Delete" name="delete" />
 </form>
+                     <br/>
+                     <br/>
+                     <a href="index.jsp">Home</a>
     </body>
 </html>

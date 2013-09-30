@@ -21,22 +21,27 @@
     <body>
         <h1 align="center">Simple Restaurant</h1>
         <form id="form1" name="form1" method="POST" action="OrderController">
-         <%
+            <table border="1">
+                   <%
                         NumberFormat nf = NumberFormat.getCurrencyInstance();
                         for(MenuItem menuItem : menuList) {
                             String item = menuItem.getItemName();
                             double itemPrice = menuItem.getItemPrice();
                     %>
          
-                    <input type="checkbox" name="menuItems" value="<%= item %>" /> <%= (item + ", " + nf.format(itemPrice)) %><br/>
+                    <tr><td><input type="checkbox" name="menuItems" value="<%= item %>" /></td><td> <%= item %></td>
+                        <td><%= nf.format(itemPrice) %> </td></tr>
                     
                     <%
                         }
                         
                      %>
-
+            </table>
                      <br/>
          <input id="orderSubmit" name="Submit Order" type="submit" value="Place Order">
         </form>
+                     <br/>
+                     <br/>
+                     <a href="index.jsp">Home</a>
     </body>
 </html>
